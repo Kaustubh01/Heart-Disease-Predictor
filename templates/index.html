@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictor</title>
+</head>
+<body>
+    <form action="/predict" method="post">
+        <input type="number" name="age" placeholder="Enter Patient's Age">
+        <br>
+
+            <label>Select Patient's Sex</label>
+            <br>
+
+            <input type="radio" name="sex" value="0"> Male
+
+            <input type="radio" name="sex" value="1"> Female
+
+        <br>
+
+        <input type="number" name="blood-pressure" placeholder="Enter Patient's Blood Pressure">
+        <br>
+        <input type="number" name="cholestrol" placeholder="Enter Patient's Cholestrol Level">
+        <br>
+        <input type="number" name="blood-sugar" placeholder="Enter Patient's Blood Sugar Level">
+        <br>
+        <input type="number" name="ecg" placeholder="Enter Patient's ECG">
+        <br>
+
+        <input type="submit" value="Check">
+
+
+    </form>
+</body>
+</html>
