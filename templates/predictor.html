@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>predictor</title>
+</head>
+<body>
+<form action="{{ url_for('predict_disease') }}" method="post">
+
+    <input type="number" name="age" placeholder="Enter your age">
+
+    <input type="radio" id="male" name="gender" value="0">
+    <label for="male">Male</label><br>
+    <input type="radio" id="female" name="gender" value="1">
+    <label for="female">Female</label><br>
+
+    <label>Select your chest pain type</label>
+      <select name="cp">
+            <option value="1"> 1</option>
+            <option value="2"> 2</option>
+            <option value="3"> 3</option>
+            <option value="4"> 4</option>
+        </select>
+
+
+    <label>resting blood pressure</label>
+    <input type="number" name="trestbps">
+
+    <label>Cholestrol level</label>
+    <input type="number" name="chol">
+
+    <label>fasting blood sugar</label>
+    <input type="number" name="fasting_blood_sugar">
+
+    <label>Rest ECG</label>
+      <select name="ecg">
+            <option value="0"> 0</option>
+            <option value="1"> 1</option>
+            <option value="2"> 2</option>
+            <option value="3"> 3</option>
+
+      </select>
+
+    <label>maximum heart rate achieved</label>
+    <input type="number" name="thalach">
+
+      <label>exercise induced angina</label>
+      <select name="exang">
+            <option value="0"> 0</option>
+            <option value="1"> 1</option>
+      </select>
+
+    <label>Old Peak</label>
+    <input type="number" name="oldpeak">
+
+    <label>the slope of the peak exercise ST segment</label>
+    <input type="number" name="slope">
+
+      <label>number of major vessels</label>
+      <select name="ca">
+            <option value="0"> 0</option>
+            <option value="1"> 1</option>
+            <option value="2"> 2</option>
+            <option value="3"> 3</option>
+
+      </select>
+
+
+    <label>thal</label>
+      <select name="thal">
+            <option value="0"> 0</option>
+            <option value="1"> 1</option>
+            <option value="2"> 2</option>
+            <option value="3"> 3</option>
+
+      </select>
+
+    <input type="submit" value="Submit">
+
+</form>
+</body>
+</html>
