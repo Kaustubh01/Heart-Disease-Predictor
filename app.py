@@ -28,9 +28,10 @@ def predict_disease():
         ca = int(request.form.get('ca'))
         thal = int(request.form.get('thal'))
 
-        data = [age, gender, cp, trestbps, chol, fasting_blood_sugar, ecg, thalach, exang, oldpeak, slope, ca, thal]
-        print(data)
-        return model.predict(np.array([200, 0, 0, 125, 212, 0, 1, 168, 0, 1.0, 2, 2, 3]))
+        final_features = np.array([age, gender, cp, trestbps, chol, fasting_blood_sugar, ecg, thalach, exang, oldpeak, slope, ca, thal]).reshape(-1, 13)
+        print(final_features)
+        prediction = model.predict(final_features)
+        print(prediction[0])
     return render_template('predictor.html')
 
 
