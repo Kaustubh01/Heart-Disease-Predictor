@@ -27,7 +27,9 @@
     align-items: center;
     justify-content: space-around;
     margin-bottom: 20px;
+    
 }
+
 input[type=number],
 select {
     margin-top: 8px;
