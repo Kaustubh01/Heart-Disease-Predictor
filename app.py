@@ -32,6 +32,8 @@ def predict_disease():
         print(final_features)
         prediction = model.predict(final_features)
         print(prediction[0])
+
+        return render_template('output.html', has_disease = prediction[0])
     return render_template('predictor.html')
 
 
