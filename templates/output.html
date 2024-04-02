@@ -1,18 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
+  </head>
+  <body>
+    <a
+      href="{{url_for('predict_disease')}}"
+      
+      ><button style="
+        background-color: #e33838;
+        border-radius: 8px;
+        padding: 10px 25px;
+        color: white;
+        border: 2px solid #e33838;
+        border-radius: 8px;
+        box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+      ">Back</button></a
+    >
     {% if has_disease == 1 %}
-    <p>You Might be having a heart disease <br> Please visit a doctor ASAP!!!</p>
+    <div
+      style="
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        text-align: center;
+      "
+    >
+      <h1>
+        You Might be having a heart disease <br />
+        Please visit a doctor ASAP!!!
+      </h1>
 
+      <img src="static\images\NO.png" alt="" />
+    </div>
     {% else %}
-
-    <p>You got a healthy heart just like Omkar's</p>
+    <div style="display: flex; align-items: center; flex-direction: column">
+      <h1>You got a healthy heart but take care</h1>
+      <img src="static\images\YES.png" alt="" />
+    </div>
 
     {% endif %}
-</body>
+  </body>
 </html>
