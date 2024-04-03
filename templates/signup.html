@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+    <link rel="stylesheet" href="../static/styles/lognsignin.css" />
     <link rel="icon" href="{{ url_for('static', filename='images/Logo-Primary.ico') }}" />
     <title>Signup</title>
   </head>
@@ -12,78 +12,82 @@
     {% include 'nav.html' %}
     <div class="signupcontent">
       <form action="{{ url_for('signup') }}" method="POST" class="signupform">
-        <h1>
+        <h1 style="
+                text-align: center;
+                font-weight: 700;
+                font-size: 28px;
+                line-height: 38px;
+                font-family: sans-serif;
+              ">
           Signup
         </h1>
-        <label for="name" >Name</label>
+        <label for="name" style="
+                        font-weight: 400;
+                        font-size: 18px;
+                        line-height: 25px;
+                        font-family: sans-serif;
+                        margin-top: 30px;
+                      ">Name</label>
         <input type="text" id="name" name="name" placeholder="Enter Name" required />
-
-        <label for="mobile" >Mobile no.</label>
+    
+        <label for="mobile" style="
+                        font-weight: 400;
+                        font-size: 18px;
+                        line-height: 25px;
+                        font-family: sans-serif;
+                        margin-top: 30px;
+                      ">Mobile no.</label>
         <input type="number" id="mobile" name="mobile" placeholder="1234567890" required />
-
-        <label
-          for="email"
-   
-          >Email</label
-        >
-        <input
-          type="email"
-          id="email"
-          name="email"
-          placeholder="abc@gmail.com"
-          required
-        />
-
-        <label
-          for="password"
-  
-          >Password:</label
-        >
-        <input
-          type="password"
-          id="password"
-          name="password"
-          placeholder="Password#123"
-          required
-        />
-
-                <label
-          for="password"
-  margin-top: 30px;
-          
-          >Confirm Password:</label
-        >
-        <input
-          type="password"
-          id="confirm-password"
-          name="confirm-password"
-          placeholder="Confirm Password"
-          required
-        />
-
-        <button  type="submit" class="logsubmit" >Sign Up</button>
-
-        <p
-
-        >
-          <span style="font-size: 18px; color: #616161"
-            >Already have an account?</span
-          >
+    
+        <label for="email" style="
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 25px;
+                font-family: sans-serif;
+                margin-top: 30px;
+              ">Email</label>
+        <input type="email" id="email" name="email" placeholder="abc@gmail.com" required />
+    
+        <label for="password" style="
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 25px;
+                font-family: sans-serif;
+                margin-top: 30px;
+              ">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Password#123" required />
+    
+        <label for="password" style="
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 25px;
+                font-family: sans-serif;
+                margin-top: 30px;
+              ">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm Password" required />
+    
+        <button type="submit" class="logsubmit">Sign Up</button>
+    
+        <p style="
+                margin-top: 40px;
+                text-align: center;
+                font-weight: 400;
+                font-family: sans-serif;
+                line-height: 45px;
+              ">
+          <span style="font-size: 18px; color: #616161">Already have an account?</span>
           <span>
-            <a
-              href="{{ url_for('login') }}"
-              style="text-decoration: none; color: #ea8930; font-size: 20px"
-            >
+            <a href="{{ url_for('login') }}" style="text-decoration: none; color: #E33838; font-size: 20px">
               Login
             </a>
           </span>
         </p>
       </form>
       <div class="img">
-        <img src="{{ url_for('static', filename= '/images/signup.png') }}" alt="" />
+        <img src="../static/images/Signup.png" alt="no" />
       </div>
     </div>
-
+    
 
     <script>
       function validateForm() {
