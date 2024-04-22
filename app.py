@@ -59,6 +59,8 @@ def signup():
 
 @app.route('/predict', methods=['POST', 'GET'])
 def predict_disease():
+    if 'user' not in session:
+        return redirect(url_for('login'))
     if request.method == "POST":
         age = int(request.form.get('age'))
         gender = int(request.form.get('gender'))
@@ -73,6 +75,8 @@ def predict_disease():
         slope = int(request.form.get('slope'))
         ca = int(request.form.get('ca'))
         thal = int(request.form.get('thal'))
+
+        
 
         final_features = np.array(
             [age, gender, cp, trestbps, chol, fasting_blood_sugar, ecg, thalach, exang, oldpeak, slope, ca,
