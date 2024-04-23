@@ -8,15 +8,15 @@ app = Flask(__name__)
 
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-@app.route('/')
-def index():
-    return render_template('predictor.html')
+# @app.route('/')
+# def index():
+#     return render_template('predictor.html')
 
 
 
 
 
-@app.route('/predict', methods=['POST', 'GET'])
+@app.route('/', methods=['POST', 'GET'])
 def predict_disease():
     if 'user' not in session:
         return redirect(url_for('login'))
