@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request
 import numpy as np
 from database import *
 import pickle
@@ -18,8 +18,7 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 @app.route('/', methods=['POST', 'GET'])
 def predict_disease():
-    if 'user' not in session:
-        return redirect(url_for('login'))
+    
     if request.method == "POST":
         age = int(request.form.get('age'))
         gender = int(request.form.get('gender'))

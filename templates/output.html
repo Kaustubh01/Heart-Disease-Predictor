@@ -6,10 +6,8 @@
     <title>Document</title>
     <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}" />
 
-    <link rel="stylesheet" href="{{ url_for('static', filename = 'styles/nav.css') }}">
   </head>
   <body>
-    {% include 'nav.html' %}
   
     <div class="output" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
     {% if has_disease == 1 %}
