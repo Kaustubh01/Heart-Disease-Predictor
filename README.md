@@ -1,235 +1,269 @@
 # Heart Disease Predictor
 
-[![Python Version](https://img.shields.io/badge/python-3.x-blue.svg)]()
-[![Flask](https://img.shields.io/badge/Flask‑web‑framework‑lightgrey.svg)]()
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)]()
-
-A web application to predict the likelihood of heart disease from patient data using a trained ML model.
+**Repository:** https://github.com/Kaustubh01/Heart-Disease-Predictor
 
 ---
 
-## Table of Contents
+## 🚀 Project summary
 
-1. [Project Overview](#project-overview)  
-2. [Architecture](#architecture)  
-3. [Getting Started](#getting-started)  
-   - [Prerequisites](#prerequisites)  
-   - [Installation](#installation)  
-   - [Running Locally](#running-locally)  
-4. [Usage](#usage)  
-5. [Model Training & Data](#model-training--data)  
-6. [Project Structure](#project-structure)  
-7. [Contributing](#contributing)  
-8. [License](#license)  
+A small ML-powered web app that predicts the likelihood of heart disease from patient features. The project contains:
+
+- A Jupyter notebook with EDA & model training (`hear_disease_predictor.ipynb`).
+- A trained model file (`clf.pkl`) saved for inference.
+- A Flask web service in `app.py` that serves the model and HTML pages (templates under `templates/` and static assets under `static/`).
+- `database.py` to store request/prediction logs (DB schema example provided below).
+- Dataset used for development: `heart.csv`.
+- `requirements.txt` listing Python dependencies.
 
 ---
 
-## Project Overview
+## 📂 Repository structure (example)
 
-This project provides:
+```
+/
+├─ .idea/
+├─ datasets/
+├─ models/
+├─ static/
+├─ templates/
+├─ app.py
+├─ database.py
+├─ clf.pkl
+├─ hear_disease_predictor.ipynb
+├─ heart.csv
+└─ requirements.txt
+```
 
-- A machine learning model (e.g. classifier) to predict whether a patient is likely to have heart disease, based on features like age, cholesterol, blood pressure, etc.
-- A Flask-based web interface to take input from users and show predictions.
-- A backend with database support (if any) to store results or user data (depending on your implementation).
-- Templates and static assets to render the UI.
-
-Use case: physicians or users input health metrics and get a prediction.
+Adjust the list above if your repo structure differs.
 
 ---
 
-## Architecture
+## ⚙️ How it works — high-level architecture
 
-Below is a high-level view of the architecture and data flow:
+1. **Data & Training**
+   - EDA and preprocessing in `hear_disease_predictor.ipynb`.
+   - Model trained (e.g., scikit-learn) and saved as `clf.pkl`.
+
+2. **Web app / API**
+   - `app.py` loads `clf.pkl` on startup and exposes endpoints for prediction and UI pages.
+   - Front-end templates collect patient features and POST them to a predict route; server returns the prediction.
+
+3. **Database / Logging**
+   - `database.py` contains DB setup and functions to persist input features and prediction results for auditing and analytics.
+
+4. **Deployment**
+   - App can be deployed to Heroku / Render / Vercel / any container host using Docker + Gunicorn. The hosted URL above should point to your deployment.
+
+---
+
+## 📈 Architecture & Data-flow diagrams
+
+> The following diagrams use Mermaid syntax and can be pasted into Markdown viewers that support Mermaid (GitHub renders Mermaid in some places, or use third-party previewers).
+
+### System architecture (Mermaid flowchart)
 
 ```mermaid
 flowchart LR
-  A[User Input (Web Form)] --> B[Flask Backend (app.py)]
-  B --> C[Data Preprocessing Module]
-  C --> D[ML Model (clf.pkl)]
-  D --> E[Prediction Result]
-  E --> F[Flask Template Rendering]
-  F --> A
+    A[User Browser]
+    A --> B[Frontend - templates/]
+    B --> C[Flask app - app.py]
+    C --> D[Model: clf.pkl]
+    C --> E[(Database - database.py)]
+    C --> F[Response page / JSON]
+    E --> G[Predictions table]
 
-  B --> G[Database Layer (database.py)]
-  G --> H[Store / Retrieve Records]
+    style A fill:#f9f,stroke:#333,stroke-width:1px
+    style D fill:#ffdead
+    style E fill:#ddf
+
+
 ```
 
-Alternatively, as ASCII:
+### Data flow for prediction (Mermaid sequence)
 
-```
-   +------------------+
-   | User (Browser)   |
-   +--------+---------+
-            |
-            v
-   +--------+---------+
-   | Flask Backend     |
-   | (app.py)          |
-   +----+-------+------+
-        |       |
-        |       v
-        |   +---+------+
-        |   | Database |
-        |   +----------+
-        v
- +------+------+        +-----------------+
- | Preprocess &  |----->| ML Model (clf)  |
- | Feature Logic |      +-----------------+
- +---------------+
-        |
-        v
- +---------------+
- | Prediction     |
- +-------+--------+
-         |
-         v
- +----------------------+
- | Rendered Response UI |
- +----------------------+
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant F as Frontend (form)
+  participant S as Server (app.py)
+  participant M as Model (clf.pkl)
+  participant DB as Database (database.py)
+
+  U->>F: submit input features (JSON/form)
+  F->>S: POST /predict
+  S->>M: call predict(features)
+  M-->>S: returns (label, probability)
+  S->>DB: save request + response
+  S-->>F: return prediction page / JSON
+  F-->>U: show predicted result
 ```
 
-### Components
+### Model training pipeline (Mermaid)
 
-- **Web interface / UI**: HTML forms, CSS, and Flask templating (in `templates/` and `static/`).
-- **Backend (Flask)**: Handles HTTP requests, input validation, routing, calling model prediction.
-- **Preprocessing**: Any scaling, encoding, feature handling done before feeding to the model.
-- **ML Model**: The trained classifier stored as `clf.pkl` in the repository.
-- **Database (optional)**: e.g. in `database.py` to store user inputs, predictions, logs.
-- **Data & Notebooks**: Dataset (`heart.csv`) and Jupyter notebook for experiments.
+```mermaid
+flowchart TD
+  A["heart.csv"] --> B["Data cleaning & feature engineering"]
+  B --> C["Train/Test split"]
+  C --> D["Model training (scikit-learn)"]
+  D --> E["Evaluation + metrics"]
+  E --> F["Save model -> clf.pkl"]
+```
 
 ---
 
-## Getting Started
+## 🗄️ Example DB schema (dbdiagram / SQL)
+
+If you want to create an ERD or import to dbdiagram.io, use this dbdiagram snippet (simple `predictions` table):
+
+```dbml
+Table predictions {
+  id int [pk, increment]
+  age int
+  sex varchar
+  cp varchar        // chest pain type
+  trestbps int
+  chol int
+  fbs int
+  restecg varchar
+  thalach int
+  exang int
+  oldpeak float
+  slope varchar
+  ca int
+  thal varchar
+  prediction varchar
+  probability float
+  created_at timestamp [default: `CURRENT_TIMESTAMP`]
+}
+```
+
+**Mermaid ERD**
+
+```mermaid
+erDiagram
+  PREDICTIONS {
+    int id PK
+    int age
+    varchar sex
+    varchar cp
+    int trestbps
+    int chol
+    int fbs
+    varchar restecg
+    int thalach
+    int exang
+    float oldpeak
+    varchar slope
+    int ca
+    varchar thal
+    varchar prediction
+    float probability
+    timestamp created_at
+  }
+```
+
+---
+
+## 🛠️ Local setup & run
 
 ### Prerequisites
 
-You need:
+- Python 3.8+
+- pip
+- (optional) virtualenv
 
-- Python 3.x  
-- `pip`  
-- (Optionally) virtual environment tool like `venv` or `conda`  
+### Install
 
-### Installation
-
-1. Clone this repo:
-
-   ```bash
-   git clone https://github.com/Kaustubh01/Heart-Disease-Predictor.git
-   cd Heart-Disease-Predictor
-   ```
-
-2. (Optional) Create & activate a virtual environment:
-
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate    # on macOS / Linux
-   venv\Scripts\activate       # on Windows
-   ```
-
-3. Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-### Running Locally
-
-1. Ensure the trained model file `clf.pkl` is present (it is in this repo).  
-2. Run the Flask app:
-
-   ```bash
-   python app.py
-   ```
-
-3. Open your browser at `http://127.0.0.1:5000` (or another host/port if configured).  
-4. Use the UI to input patient features and get a prediction.
-
----
-
-## Usage
-
-- Fill in the form fields (e.g. age, cholesterol, blood pressure, etc.).  
-- Submit the form.  
-- View the prediction results (e.g. “Heart Disease: Yes / No” or probability).
-
-You can extend or customize this to show probability scores, confidence, or explanation (e.g. SHAP, LIME).
-
----
-
-## Model Training & Data
-
-- The dataset used is `heart.csv` (provided in `datasets/`).  
-- Experiments and model selection have been done in `heart_disease_predictor.ipynb`.  
-- The final model is serialized into `clf.pkl`.  
-
-If you want to retrain or improve:
-
-1. Load the CSV in Jupyter, do exploratory data analysis.  
-2. Preprocess features (scaling, encoding).  
-3. Train multiple classifiers (Logistic Regression, Random Forest, etc.).  
-4. Evaluate (cross‑validation, ROC, etc.).  
-5. Save the best model using `pickle` or `joblib`.  
-6. Replace `clf.pkl` and ensure input feature order matches.
-
----
-
-## Project Structure
-
-Here is the folder layout with explanation:
-
-```
-Heart-Disease-Predictor/
-├── app.py                     # Flask app entry point, defines routes, prediction logic
-├── database.py                # Database utilities (e.g. storing or retrieving records)
-├── clf.pkl                     # Serialized trained ML model
-├── hear_disease_predictor.ipynb  # Jupyter notebook for training & analysis
-├── heart.csv                   # Dataset
-├── requirements.txt            # Python package dependencies
-├── templates/                   # Flask HTML templates
-│   ├── index.html
-│   └── result.html
-├── static/                      # Static assets (CSS, JS, images)
-│   ├── css/
-│   └── js/
-├── models/                       # (Optional) you can store alternate models here
-└── datasets/                    # (Optional) raw or additional datasets
+```bash
+git clone https://github.com/Kaustubh01/Heart-Disease-Predictor.git
+cd Heart-Disease-Predictor
+python -m venv venv
+# mac / linux
+source venv/bin/activate
+# windows (powershell)
+venv\Scripts\Activate.ps1
+pip install -r requirements.txt
 ```
 
-Notes:
+> If `requirements.txt` is missing or incomplete, typical dependencies include:
+```
+Flask
+pandas
+numpy
+scikit-learn
+joblib
+gunicorn
+```
 
-- `app.py` handles routing, input validation, and calling prediction logic.  
-- `database.py` is optional (depending on whether you store user interactions).  
-- Templates folder stores the front-end layout.  
-- `clf.pkl` must be consistent with the preprocessing pipeline.
+### Run the app
 
----
+```bash
+# If app.py contains `if __name__ == '__main__': app.run(...)`
+python app.py
 
-## Contributing
+# Or use Flask CLI if configured
+export FLASK_APP=app.py
+flask run
+```
 
-Contributions are welcome! Some ideas:
-
-- Add more models (e.g. XGBoost, Neural Networks).  
-- Add explainability (SHAP, LIME).  
-- Add user authentication and save user history.  
-- Improve UI/UX and styling.  
-- Deploy to a cloud service (Heroku, AWS, etc.).  
-
-Steps:
-
-1. Fork the repository  
-2. Create a new branch: `git checkout -b feature-name`  
-3. Make changes & test  
-4. Commit changes and push: `git push origin feature-name`  
-5. Open a Pull Request  
-
-Please follow proper code style and add documentation.
+Open `http://127.0.0.1:5000/` in your browser (or the port shown).
 
 ---
 
-## License
+## 🔁 Example `curl` request (generic)
 
-This project is licensed under the **MIT License** — see `LICENSE` for more details.
+> Update the URL and JSON keys to match your `app.py` routes and expected features.
+
+```bash
+curl -X POST "http://localhost:5000/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "age": 63,
+    "sex": 1,
+    "cp": 3,
+    "trestbps": 145,
+    "chol": 233,
+    "fbs": 1,
+    "restecg": 0,
+    "thalach": 150,
+    "exang": 0,
+    "oldpeak": 2.3,
+    "slope": 0,
+    "ca": 0,
+    "thal": 1
+  }'
+```
 
 ---
 
-> **Note:** You may want to add badges (build status, coverage) or screenshots of the UI at top for better presentation.
+## 🐳 Docker & Deployment
+
+### Dockerfile (example)
+
+```dockerfile
+FROM python:3.10-slim
+WORKDIR /app
+COPY . /app
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+EXPOSE 5000
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+```
+
+### Procfile (Heroku)
+
+```
+web: gunicorn app:app
+```
+
+---
+
+## ✅ Tests & validations (suggested)
+
+- Add a small unit test to verify the model loads and predicts on a sample row.
+- Add server-side validation for incoming JSON/form fields.
+- Add CI to run linting and tests.
+
+---
+
+
